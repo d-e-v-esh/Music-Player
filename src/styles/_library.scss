@@ -1,3 +1,27 @@
-.library{
-	posi
+.library {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20rem;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    box-shadow: 2px 2px 50px rgb(204, 204, 204);
+    overflow: scroll;
+    h2 {
+        padding: 2rem;
+    }
+}
+
+.library-song {
+    display: flex;
+    align-items: center;
+    img {
+        width: 30%;
+    }
+    flex-direction: column;
+    padding: 1rem 2rem 1rem 2rem;
+}
+
+.song-description {
+    padding-left: 1rem;
 }
