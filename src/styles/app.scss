@@ -1,0 +1,17 @@
+* {
+    // The * star here means that we are removing all the styling form all the elements and overwriting them this.
+    // i.e. Getting rid of all the margins and paddings from all the elements like headings, divs, images
+    // And if we need then we can add them after manually because those elements have default margins and paddings already added to them.
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3 {
+    color: rgb(51, 51, 51);
+}
+
+@import "./song";
+@import "./player";
