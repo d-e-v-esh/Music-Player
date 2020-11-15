@@ -5,10 +5,15 @@ import {
     faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
-const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
-    const audioRef = useRef(null);
-
+import React from "react";
+const Player = ({
+    currentSong,
+    isPlaying,
+    setIsPlaying,
+    audioRef,
+    setSongInfo,
+    songInfo,
+}) => {
     // When we clink on the button
     // If the song is playing then pause it and change the state to !isPlaying
     // else => the song is paused => Play the song.
@@ -23,24 +28,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
         }
     };
 
-    // Updating the time of the song played on the player.
-    const timeUpdateHandler = (e) => {
-        // Here we have access to the event of the onTimeUpdate
-        // This event gives us the current time and the duration of the song.
-        const current = e.target.currentTime;
-        const duration = e.target.duration;
-        // Updating the state of the timer on both sides of the slider
-        setSongInfo({ ...songInfo, currentTime: current, duration: duration });
-
-        console.log(current);
-    };
-
-    // State
-    const [songInfo, setSongInfo] = useState({
-        currentTime: 0,
-        duration: 0,
-    });
-
     const getTime = (time) => {
         // Function that formats numbers in minutes and seconds
         return (
@@ -50,7 +37,7 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
         );
     };
     const dragHandler = (e) => {
-        // Here e.target.value gives us where we leave off the slider.
+        // Here e.target.value gives us the value where we leave off the slider.
         // We will set that to the current time so that the slider controls the song time.
 
         audioRef.current.currentTime = e.target.value;
@@ -94,13 +81,6 @@ const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
                     size="2x" // Maks it 2 times bigger
                 />
             </div>
-            {/* onTimeUpdate runs everytime the time changes on the audio. */}
-            <audio
-                ref={audioRef}
-                src={currentSong.audio}
-                onTimeUpdate={timeUpdateHandler}
-                onLoadedMetadata={timeUpdateHandler} // This makes the time load on the screen before we hit the play button otherwise we can't see the time and duration before hitting the play button.
-            />
         </div>
     );
 };

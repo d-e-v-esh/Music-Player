@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 // Adding Components
 import Library from "./components/Library";
 import Player from "./components/Player";
@@ -9,8 +9,26 @@ import "./styles/app.scss";
 import data from "./util";
 
 function App() {
+    const audioRef = useRef(null);
+    // State
+    const [songInfo, setSongInfo] = useState({
+        currentTime: 0,
+        duration: 0,
+    });
+    // Updating the time of the song played on the player.
+    const timeUpdateHandler = (e) => {
+        // Here we have access to the event of the onTimeUpdate
+        // This event gives us the current time and the duration of the song.
+        const current = e.target.currentTime;
+        const duration = e.target.duration;
+        // Updating the state of the timer on both sides of the slider
+        setSongInfo({ ...songInfo, currentTime: current, duration: duration });
+
+        console.log(current);
+    };
+
     const [songs, setSongs] = useState(data());
-    const [currentSong, setCurrentSongs] = useState(songs[0]);
+    const [currentSong, setCurrentSong] = useState(songs[0]);
     const [isPlaying, setIsPlaying] = useState(false);
     // If I run this, all this data functions does is returns the util data.
     return (
@@ -21,8 +39,25 @@ function App() {
                 currentSong={currentSong}
                 isPlaying={isPlaying}
                 setIsPlaying={setIsPlaying}
+                audioRef={audioRef} // Pass down the audio to the player
+                setSongInfo={setSongInfo}
+                songInfo={songInfo}
             />
-            <Library songs={songs} />
+
+            {/* Here in the library we are passing down  */}
+            <Library
+                songs={songs}
+                setCurrentSong={setCurrentSong}
+                audioRef={audioRef}
+                isPlaying={isPlaying}
+            />
+            {/* onTimeUpdate runs everytime the time changes on the audio. */}
+            <audio
+                ref={audioRef}
+                src={currentSong.audio}
+                onTimeUpdate={timeUpdateHandler}
+                onLoadedMetadata={timeUpdateHandler} // This makes the time load on the screen before we hit the play button otherwise we can't see the time and duration before hitting the play button.
+            />
         </div>
     );
 }

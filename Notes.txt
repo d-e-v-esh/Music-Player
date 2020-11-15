@@ -1,0 +1,7 @@
+If you don't have the ability to access something from another component that you want, then it means you need to lift it up, i.e. move it up a level.
+
+Here we will take the audioRef from the player file and put it inside our app file.
+
+Now that we have the audio up in the app file, we can pass it down to anywhere we want.
+
+There are much better ways to do state management than just drilling down tons of props but it is important to have experience with this way too.
