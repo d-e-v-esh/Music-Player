@@ -48,18 +48,16 @@ const Player = ({
             <div className="time-control">
                 <p>{getTime(songInfo.currentTime)}</p>
                 <input
-                    // This is the slider
-
-                    type="range"
                     min={0}
                     // Minimum is always 0
-                    max={songInfo.duration}
-                    // max would be the length of the
+                    max={songInfo.duration || 0}
+                    // max would be the length of the song
                     value={songInfo.currentTime}
                     // Where we move the slider, dragHandler is going to be called.
                     onChange={dragHandler}
+                    type="range"
                 />
-                <p>{getTime(songInfo.duration)}</p>
+                <p>{getTime(songInfo.duration || 0)}</p>
             </div>
             {/* Icons */}
             <div className="play-control">
