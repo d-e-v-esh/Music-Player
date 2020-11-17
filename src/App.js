@@ -4,10 +4,10 @@ import Library from "./components/Library";
 import Nav from "./components/Nav";
 import Player from "./components/Player";
 import Song from "./components/Song";
+// Import Util
+import data from "./data";
 // Importing Styles
 import "./styles/app.scss";
-// Import Util
-import data from "./util";
 
 function App() {
     const audioRef = useRef(null);
@@ -21,6 +21,7 @@ function App() {
     const [songInfo, setSongInfo] = useState({
         currentTime: 0,
         duration: 0,
+        animationPercentage: 0,
     });
     // Updating the time of the song played on the player.
     const timeUpdateHandler = (e) => {
@@ -28,10 +29,19 @@ function App() {
         // This event gives us the current time and the duration of the song.
         const current = e.target.currentTime;
         const duration = e.target.duration;
-        // Updating the state of the timer on both sides of the slider
-        setSongInfo({ ...songInfo, currentTime: current, duration: duration });
 
-        console.log(current);
+        //Calculate Percentage
+        const roundedCurrent = Math.round(current);
+        const roundedDuration = Math.round(duration);
+        const animation = Math.round((roundedCurrent / roundedDuration) * 100);
+        console.log(animation);
+        // Updating the state of the timer on both sides of the slider
+        setSongInfo({
+            ...songInfo,
+            currentTime: current,
+            duration: duration,
+            animationPercentage: animation,
+        });
     };
 
     // If I run this, all this data functions does is returns the util data.
@@ -50,6 +60,9 @@ function App() {
                 audioRef={audioRef} // Pass down the audio to the player
                 setSongInfo={setSongInfo}
                 songInfo={songInfo}
+                songs={songs}
+                setSongs={setSongs}
+                setCurrentSong={setCurrentSong}
             />
 
             {/* Here in the library we are passing down  */}

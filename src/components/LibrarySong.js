@@ -1,5 +1,5 @@
 import React from "react";
-
+import { playAudio } from "../util";
 const LibrarySong = ({
     song,
     setCurrentSong,
@@ -42,15 +42,7 @@ const LibrarySong = ({
         });
         setSongs(newSongs);
 
-        if (isPlaying) {
-            // We are checking if the song is playing, if that is true, when we change the song, the song should keep playing and not start from a pause.
-            const playPromise = audioRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise.then((audio) => {
-                    audioRef.current.play();
-                });
-            }
-        }
+        playAudio(isPlaying, audioRef);
     };
 
     return (

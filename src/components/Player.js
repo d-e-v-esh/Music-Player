@@ -5,19 +5,42 @@ import {
     faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect } from "react";
+import { playAudio } from "../util";
 const Player = ({
     currentSong,
     isPlaying,
     setIsPlaying,
     audioRef,
     setSongInfo,
+    setCurrentSong,
     songInfo,
+    songs,
+    setSongs,
 }) => {
+    useEffect(() => {
+        const newSongs = songs.map((song) => {
+            if (song.id === currentSong.id) {
+                return {
+                    ...song,
+                    active: true,
+                };
+            } else {
+                return {
+                    ...song,
+                    active: false,
+                };
+            }
+        });
+        setSongs(newSongs);
+
+        // [currentSong] below tells useEffect to run the function above whenever currentSong gets updated.
+    }, [currentSong]);
     // When we clink on the button
     // If the song is playing then pause it and change the state to !isPlaying
     // else => the song is paused => Play the song.
     // (!isPlaying) is just toggeling the player on and off. In both cases, we are setting the playing to the opposit of what it was. true<=>false
+
     const playSongHandler = () => {
         if (isPlaying) {
             audioRef.current.pause();
@@ -43,25 +66,57 @@ const Player = ({
         audioRef.current.currentTime = e.target.value;
         setSongInfo({ ...songInfo, currentTime: e.target.value });
     };
+    const skipTrackHandler = (direction) => {
+        // Here we basically loop through all the songs in the database to find our songs in there among all other songs which gives us the index.
+        // Does the id here match the id from the state, if it does then give me it's index
+        const currentIndex = songs.findIndex(
+            (song) => song.id === currentSong.id
+        );
+
+        // Now we can take proper actions based on the button that was pressed.
+        if (direction === "skip-forward") {
+            // Here we added mod so that the list will loop again when we reach the end of the list
+            setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+        }
+
+        if (direction === "skip-back") {
+            // This here checks if the index goes below 0
+            if ((currentIndex - 1) % songs.length === -1) {
+                setCurrentSong(songs[songs.length - 1]);
+                playAudio(isPlaying, audioRef);
+                return;
+            }
+
+            setCurrentSong(songs[(currentIndex - 1) % songs.length]);
+        }
+        playAudio(isPlaying, audioRef);
+    };
+
+    //Add the styles
+    const trackAnim = {
+        transform: `translateX(${songInfo.animationPrecentage}%)`,
+    };
+
     return (
         <div className="player">
             <div className="time-control">
                 <p>{getTime(songInfo.currentTime)}</p>
-                <input
-                    min={0}
-                    // Minimum is always 0
-                    max={songInfo.duration || 0}
-                    // max would be the length of the song
-                    value={songInfo.currentTime}
-                    // Where we move the slider, dragHandler is going to be called.
-                    onChange={dragHandler}
-                    type="range"
-                />
+                <div className="track">
+                    <input
+                        min={0}
+                        max={songInfo.duration}
+                        value={songInfo.currentTime}
+                        onChange={dragHandler}
+                        type="range"
+                    />
+                    <div style={trackAnim} className="animate-track"></div>
+                </div>
                 <p>{getTime(songInfo.duration || 0)}</p>
             </div>
             {/* Icons */}
             <div className="play-control">
                 <FontAwesomeIcon
+                    onClick={() => skipTrackHandler("skip-back")}
                     className="skip-back"
                     icon={faAngleLeft}
                     size="2x"
@@ -77,6 +132,7 @@ const Player = ({
                     className="skip-forward"
                     icon={faAngleRight}
                     size="2x" // Maks it 2 times bigger
+                    onClick={() => skipTrackHandler("skip-forward")}
                 />
             </div>
         </div>
