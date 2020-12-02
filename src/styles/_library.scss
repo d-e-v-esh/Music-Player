@@ -1,69 +1,76 @@
 .library {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 20rem;
-    height: 100%;
-    background: rgb(255, 255, 255);
-    box-shadow: 2px 2px 50px rgb(204, 204, 204);
-    overflow: scroll;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 22rem;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  box-shadow: 2px 2px 50px rgb(204, 204, 204);
+  overflow: scroll;
 
-    // Here we are hiding the lib bar and animating it back to the screen on the press of a button
-    transform: translateX(-100%); // hiding the bar
+  // Here we are hiding the lib bar and animating it back to the screen on the press of a button
+  transform: translateX(-100%); // hiding the bar
 
-    transition: all 0.5s ease;
-    opacity: 0;
-    h2 {
-        padding: 2rem;
-    }
+  transition: all 0.5s ease;
+  opacity: 0;
+  h2 {
+    padding: 2rem;
+  }
 }
 
 .library-song {
-    display: flex;
-    align-items: center;
-    padding: 1rem 2rem 1rem 2rem;
-    cursor: pointer;
-    img {
-        width: 30%;
-    }
-    &:hover {
-        background: rgb(233, 249, 255);
-    }
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem 1rem 2rem;
+  transition: background 0.5s ease;
+  cursor: pointer;
+  img {
+    width: 30%;
+  }
+  &:hover {
+    background: rgb(154, 228, 255);
+  }
 }
 
 .song-description {
-    padding-left: 1rem;
-    h3 {
-        font-size: 1.4rem;
-    }
-    h4 {
-        font-size: 1rem;
-    }
+  padding-left: 1rem;
+  h3 {
+    font-size: 1.4rem;
+  }
+  h4 {
+    font-size: 1rem;
+  }
 }
 
 * {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
 }
 *::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 }
 
 *::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: rgba(155, 155, 155, 0.5);
-    border-radius: 20px;
-    border: transparent;
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
 }
 
 .selected {
-    background: darksalmon;
+  background: darksalmon;
 }
 
 .active-library {
-    transform: translateX(0%);
-    opacity: 1;
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .library {
+    width: 100%;
+  }
 }
